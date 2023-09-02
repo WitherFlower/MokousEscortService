@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://b67p7514nt8j3"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_dx1wm"]
+[ext_resource type="PackedScene" uid="uid://c8qgftcfmal8u" path="res://scenes/Bullet.tscn" id="2_dxsqq"]
+[ext_resource type="Texture2D" uid="uid://d1img717ecekv" path="res://assets/Idle 1.png" id="2_rgkwo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2b1if"]
+
+[node name="Enemy" type="Area2D" groups=["enemies"]]
+script = ExtResource("1_dx1wm")
+BulletScene = ExtResource("2_dxsqq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rgkwo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2b1if")

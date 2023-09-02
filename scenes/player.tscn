@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://beylosxmkko5c"]
+
+[ext_resource type="Script" path="res://scripts/player.cs" id="1_58258"]
+[ext_resource type="Texture2D" uid="uid://q81l5h5cica0" path="res://assets/Player.png" id="1_lorf2"]
+[ext_resource type="PackedScene" uid="uid://dd0k5mmuee48c" path="res://scenes/Projectile.tscn" id="2_2gb8c"]
+[ext_resource type="Script" path="res://scripts/Princess.cs" id="4_alccy"]
+[ext_resource type="Texture2D" uid="uid://dk208xysqqc56" path="res://assets/Big Fairy Ref.png" id="5_ko8oe"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f1ugq"]
+radius = 3.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0yxut"]
+radius = 3.0
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_58258")
+ProjectileScene = ExtResource("2_2gb8c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lorf2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f1ugq")
+
+[node name="Princess" type="Area2D" parent="."]
+script = ExtResource("4_alccy")
+
+[node name="Sprite2D" type="Sprite2D" parent="Princess"]
+texture = ExtResource("5_ko8oe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Princess"]
+shape = SubResource("CircleShape2D_0yxut")
