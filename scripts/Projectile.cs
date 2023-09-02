@@ -4,7 +4,7 @@ using System;
 public partial class Projectile : Area2D
 {
 
-	private Vector2 Speed = new Vector2(0, -800);
+	public Vector2 Speed = new Vector2(0, -800);
 
 	Node playfield;
 

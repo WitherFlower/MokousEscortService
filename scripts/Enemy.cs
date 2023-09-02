@@ -35,11 +35,11 @@ public partial class Enemy : Area2D
 		while (shotTimer > shotInterval)
 		{
 			shotTimer -= shotInterval;
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 8; i++)
 			{
 				Vector2 bulletDirection = new Vector2(
-					Mathf.Cos(2 * i * Mathf.Pi / 16),
-					Mathf.Sin(2 * i * Mathf.Pi / 16)
+					Mathf.Cos(2 * i * Mathf.Pi / 8),
+					Mathf.Sin(2 * i * Mathf.Pi / 8)
 				);
 
 				Bullet bullet = BulletScene.Instantiate<Bullet>();

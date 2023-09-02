@@ -4,7 +4,7 @@ using System;
 public partial class Princess : Area2D
 {
 
-	const int speed = 400;
+	const int speed = 300;
 	Vector2 targetPos;
 
 	// Called when the node enters the scene tree for the first time.

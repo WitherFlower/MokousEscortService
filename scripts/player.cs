@@ -5,7 +5,7 @@ public partial class player : Area2D
 {
 
 	[Export]
-	public int Speed { get; set; } = 400;
+	public int Speed { get; set; } = 300;
 
 	[Export]
 	public PackedScene ProjectileScene { get; set; }
@@ -15,6 +15,9 @@ public partial class player : Area2D
 
 	Princess Princess;
 	const int princessDistance = 32;
+
+	const float shotInterval = 1 / 20f;
+	float shotTimer = 0;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -71,11 +74,17 @@ public partial class player : Area2D
 
 		if (Input.IsActionPressed("fire"))
 		{
-			var projectile = ProjectileScene.Instantiate<Projectile>();
-			projectile.Position = Position + new Vector2(0, -30);
+			shotTimer += (float)delta;
 
-			AddSibling(projectile);
+			while (shotTimer > shotInterval)
+			{
+				shotTimer -= shotInterval;
+
+				var projectile = ProjectileScene.Instantiate<Projectile>();
+				projectile.Position = Position + new Vector2(0, -30) + projectile.Speed * shotTimer;
+
+				AddSibling(projectile);
+			}
 		}
-
 	}
 }
