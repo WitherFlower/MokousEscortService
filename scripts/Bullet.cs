@@ -8,12 +8,14 @@ public partial class Bullet : Area2D
 
 	Node playfield;
 	Player player;
+	Princess princess;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		playfield = GetNode("..");
 		player = GetNode<Player>("../Player");
+		princess = GetNode<Princess>("../Player/Princess");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,6 +26,11 @@ public partial class Bullet : Area2D
 		if (OverlapsArea(player))
 		{
 			player.onHit();
+			QueueFree();
+		}
+		if (OverlapsArea(princess))
+		{
+			player.onPrincessHit();
 			QueueFree();
 		}
 	}

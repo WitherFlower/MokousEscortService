@@ -27,6 +27,7 @@ public partial class PowerItem : Area2D
 
 		if (OverlapsArea(player))
 		{
+			player.addPower();
 			QueueFree();
 		}
 	}

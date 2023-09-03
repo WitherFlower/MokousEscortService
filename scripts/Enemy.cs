@@ -21,10 +21,14 @@ public partial class Enemy : Area2D
 
 	public Path path;
 
+	ScoreProcessor scoreProcessor;
+	public int scoreIncrease = 10;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		updatePosition();
+		scoreProcessor = GetNode<ScoreProcessor>("/root/Main/ScoreProcessor");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -85,6 +89,8 @@ public partial class Enemy : Area2D
 		var item = ItemScene.Instantiate<PowerItem>();
 		item.Position = Position;
 		AddSibling(item);
+
+		scoreProcessor.addScore(scoreIncrease);
 
 		QueueFree();
 	}

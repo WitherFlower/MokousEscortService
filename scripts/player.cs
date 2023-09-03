@@ -18,19 +18,57 @@ public partial class Player : Area2D
 	const float shotInterval = 1 / 20f;
 	float shotTimer = 0;
 
+	const float stunDelay = 1;
+	float stunTimer = 0;
+
+	int pendingPower = 0;
+	int bankedPower = 0;
+
 	private AnimatedSprite2D animatedSprite2D;
+	ScoreProcessor scoreProcessor;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		PlayfieldSize = (Vector2)GetNode("..").Get("TextureSize");
+
 		Princess = (Princess)GetNode("Princess");
 		Princess.SetTargetPos(new Vector2(0, princessDistance));
+
 		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		scoreProcessor = GetNode<ScoreProcessor>("/root/Main/ScoreProcessor");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
+	{
+
+		if (stunTimer <= 0)
+		{
+			updatePosition(delta);
+		}
+		else
+		{
+			stunTimer -= (float)delta;
+		}
+
+		if (Input.IsActionPressed("fire"))
+		{
+			shotTimer += (float)delta;
+
+			while (shotTimer > shotInterval)
+			{
+				shotTimer -= shotInterval;
+
+				var projectile = ProjectileScene.Instantiate<Projectile>();
+				projectile.Position = Position + new Vector2(0, -30) + projectile.Speed * shotTimer;
+
+				AddSibling(projectile);
+			}
+		}
+	}
+
+	private void updatePosition(double delta)
 	{
 		var velocity = Vector2.Zero;
 
@@ -70,6 +108,12 @@ public partial class Player : Area2D
 
 		animatedSprite2D.Play("idle");
 
+		Position += velocity * (float)delta;
+		Position = new Vector2(
+			Mathf.Clamp(Position.X, PlayerSize.X / 2, PlayfieldSize.X - PlayerSize.X / 2),
+			Mathf.Clamp(Position.Y, PlayerSize.Y / 2, PlayfieldSize.Y - PlayerSize.Y / 2)
+		);
+
 		if (velocity.X < 0)
 		{
 			animatedSprite2D.Play("left");
@@ -78,38 +122,34 @@ public partial class Player : Area2D
 		{
 			animatedSprite2D.Play("right");
 		}
-
-		Position += velocity * (float)delta;
-		Position = new Vector2(
-			Mathf.Clamp(Position.X, PlayerSize.X / 2, PlayfieldSize.X - PlayerSize.X / 2),
-			Mathf.Clamp(Position.Y, PlayerSize.Y / 2, PlayfieldSize.Y - PlayerSize.Y / 2)
-		);
-
-		if (Input.IsActionPressed("fire"))
-		{
-			shotTimer += (float)delta;
-
-			while (shotTimer > shotInterval)
-			{
-				shotTimer -= shotInterval;
-
-				var projectile = ProjectileScene.Instantiate<Projectile>();
-				projectile.Position = Position + new Vector2(0, -30) + projectile.Speed * shotTimer;
-
-				AddSibling(projectile);
-			}
-		}
 	}
 
 	public void onHit()
 	{
-		var enemies = GetTree().GetNodesInGroup("enemies");
+		stunTimer = stunDelay;
+
+		if (pendingPower < 20)
+			return;
 
 		// Deathbomb
+		var enemies = GetTree().GetNodesInGroup("enemies");
 		foreach (Enemy enemy in enemies)
 		{
 			enemy.kill();
 		}
+
+		bankedPower += pendingPower;
+		pendingPower = 0;
+	}
+
+	internal void addPower()
+	{
+		pendingPower++;
+	}
+
+	internal void onPrincessHit()
+	{
+		scoreProcessor.resetCombo();
 	}
 
 }
