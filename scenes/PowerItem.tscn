@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dby46jhumhjax"]
+
+[ext_resource type="Script" path="res://scripts/PowerItem.cs" id="1_f4k3m"]
+[ext_resource type="Texture2D" uid="uid://iovelkrl85bj" path="res://assets/Power.png" id="2_6rus5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_13xec"]
+size = Vector2(14, 14)
+
+[node name="PowerItem" type="Area2D"]
+script = ExtResource("1_f4k3m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_6rus5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_13xec")
+
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -1,23 +1,122 @@
-[gd_scene load_steps=8 format=3 uid="uid://beylosxmkko5c"]
+[gd_scene load_steps=24 format=3 uid="uid://beylosxmkko5c"]
 
-[ext_resource type="Script" path="res://scripts/player.cs" id="1_58258"]
-[ext_resource type="Texture2D" uid="uid://q81l5h5cica0" path="res://assets/Player.png" id="1_lorf2"]
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_h6p4i"]
 [ext_resource type="PackedScene" uid="uid://dd0k5mmuee48c" path="res://scenes/Projectile.tscn" id="2_2gb8c"]
+[ext_resource type="Texture2D" uid="uid://cqv6vx5cewap3" path="res://assets/mokou/Player1.png" id="3_3pyvd"]
 [ext_resource type="Script" path="res://scripts/Princess.cs" id="4_alccy"]
-[ext_resource type="Texture2D" uid="uid://dk208xysqqc56" path="res://assets/Big Fairy Ref.png" id="5_ko8oe"]
+[ext_resource type="Texture2D" uid="uid://b5fumhok85xr2" path="res://assets/mokou/Player2.png" id="4_qxc37"]
+[ext_resource type="Texture2D" uid="uid://cc4uruaxrbpi" path="res://assets/mokou/Player3.png" id="5_pdlfp"]
+[ext_resource type="Texture2D" uid="uid://b3xm7ruxq3umn" path="res://assets/mokou/Player4.png" id="6_8uhgh"]
+[ext_resource type="Texture2D" uid="uid://27kwxy0ehdb5" path="res://assets/mokou/Player L1.png" id="7_uych3"]
+[ext_resource type="Texture2D" uid="uid://dmj5qx3dkeoow" path="res://assets/mokou/Player L2.png" id="8_2phiu"]
+[ext_resource type="Texture2D" uid="uid://br0wrmnvqv42d" path="res://assets/mokou/Player R1.png" id="9_hf2ql"]
+[ext_resource type="Texture2D" uid="uid://dri1qebvtb6i4" path="res://assets/mokou/Player R2.png" id="10_njwv3"]
+[ext_resource type="Texture2D" uid="uid://bc5t66cpoc6q3" path="res://assets/kaguya/kaguya1.png" id="12_obfmo"]
+[ext_resource type="Texture2D" uid="uid://d1qk6ny0glnar" path="res://assets/kaguya/kaguya2.png" id="13_t6j1o"]
+[ext_resource type="Texture2D" uid="uid://cxa10fypsempr" path="res://assets/kaguya/kaguya3.png" id="14_1h051"]
+[ext_resource type="Texture2D" uid="uid://cpbt1u1dndglw" path="res://assets/kaguya/kaguya4.png" id="15_ktpkk"]
+[ext_resource type="Texture2D" uid="uid://dguxw066nblii" path="res://assets/kaguya/kaguya L1.png" id="16_57mfn"]
+[ext_resource type="Texture2D" uid="uid://dh2lg7ni8vmgs" path="res://assets/kaguya/kaguya L2.png" id="17_b7pam"]
+[ext_resource type="Texture2D" uid="uid://cf6xqo5danvut" path="res://assets/kaguya/kaguya R1.png" id="18_26ryg"]
+[ext_resource type="Texture2D" uid="uid://bnqf1n1ikjse0" path="res://assets/kaguya/kaguya R2.png" id="19_k0xwd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cf2sa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_3pyvd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_qxc37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_pdlfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_8uhgh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_uych3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2phiu")
+}],
+"loop": false,
+"name": &"left",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_hf2ql")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_njwv3")
+}],
+"loop": false,
+"name": &"right",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f1ugq"]
 radius = 3.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yss0h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_obfmo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_t6j1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_1h051")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ktpkk")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_57mfn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_b7pam")
+}],
+"loop": true,
+"name": &"left",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_26ryg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_k0xwd")
+}],
+"loop": false,
+"name": &"right",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0yxut"]
 radius = 3.0
 
 [node name="Player" type="Area2D"]
-script = ExtResource("1_58258")
+script = ExtResource("1_h6p4i")
 ProjectileScene = ExtResource("2_2gb8c")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_lorf2")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_cf2sa")
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_f1ugq")
@@ -25,8 +124,9 @@ shape = SubResource("CircleShape2D_f1ugq")
 [node name="Princess" type="Area2D" parent="."]
 script = ExtResource("4_alccy")
 
-[node name="Sprite2D" type="Sprite2D" parent="Princess"]
-texture = ExtResource("5_ko8oe")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Princess"]
+sprite_frames = SubResource("SpriteFrames_yss0h")
+animation = &"left"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Princess"]
 shape = SubResource("CircleShape2D_0yxut")

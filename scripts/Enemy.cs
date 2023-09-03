@@ -7,6 +7,9 @@ public partial class Enemy : Area2D
 	[Export]
 	public PackedScene BulletScene { get; set; }
 
+	[Export]
+	public PackedScene ItemScene { get; set; }
+
 	public PathFollow2D pathFollow2D { get; set; }
 
 	private int hp = 4;
@@ -67,12 +70,23 @@ public partial class Enemy : Area2D
 
 	public void onHit()
 	{
-		hp--;
+		// easy fix to prevent killing enemies before they appear on screen
+		if (lifeTime > 0.5)
+		{
+			hp--;
+		}
 
 		if (hp <= 0)
-		{
-			QueueFree();
-		}
+			kill();
+	}
+
+	public void kill()
+	{
+		var item = ItemScene.Instantiate<PowerItem>();
+		item.Position = Position;
+		AddSibling(item);
+
+		QueueFree();
 	}
 
 }

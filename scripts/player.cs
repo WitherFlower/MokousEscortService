@@ -1,10 +1,9 @@
 using Godot;
 using System;
 
-public partial class player : Area2D
+public partial class Player : Area2D
 {
 
-	[Export]
 	public int Speed { get; set; } = 300;
 
 	[Export]
@@ -19,12 +18,15 @@ public partial class player : Area2D
 	const float shotInterval = 1 / 20f;
 	float shotTimer = 0;
 
+	private AnimatedSprite2D animatedSprite2D;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		PlayfieldSize = (Vector2)GetNode("..").Get("TextureSize");
 		Princess = (Princess)GetNode("Princess");
 		Princess.SetTargetPos(new Vector2(0, princessDistance));
+		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,6 +68,17 @@ public partial class player : Area2D
 			}
 		}
 
+		animatedSprite2D.Play("idle");
+
+		if (velocity.X < 0)
+		{
+			animatedSprite2D.Play("left");
+		}
+		else if (velocity.X > 0)
+		{
+			animatedSprite2D.Play("right");
+		}
+
 		Position += velocity * (float)delta;
 		Position = new Vector2(
 			Mathf.Clamp(Position.X, PlayerSize.X / 2, PlayfieldSize.X - PlayerSize.X / 2),
@@ -87,4 +100,16 @@ public partial class player : Area2D
 			}
 		}
 	}
+
+	public void onHit()
+	{
+		var enemies = GetTree().GetNodesInGroup("enemies");
+
+		// Deathbomb
+		foreach (Enemy enemy in enemies)
+		{
+			enemy.kill();
+		}
+	}
+
 }
