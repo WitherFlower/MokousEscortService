@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7sq4kx04iwyj"]
+[gd_scene load_steps=8 format=3 uid="uid://c7sq4kx04iwyj"]
 
 [ext_resource type="Texture2D" uid="uid://bwe4cssg1lphj" path="res://assets/Mockup Area (Screen Size).png" id="1_2wpov"]
 [ext_resource type="PackedScene" uid="uid://beylosxmkko5c" path="res://scenes/player.tscn" id="1_07dit"]
 [ext_resource type="Script" path="res://scripts/playfield.cs" id="1_613hy"]
 [ext_resource type="PackedScene" uid="uid://b67p7514nt8j3" path="res://scenes/Enemy.tscn" id="2_hvfn8"]
+[ext_resource type="PackedScene" uid="uid://qcmabn2cn58d" path="res://scenes/BigEnemy.tscn" id="3_wrvix"]
+[ext_resource type="Script" path="res://scripts/Explosion.cs" id="6_rhlcb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wemgy"]
 size = Vector2(256, 320)
@@ -11,6 +13,7 @@ size = Vector2(256, 320)
 [node name="Playfield" type="Area2D"]
 script = ExtResource("1_613hy")
 EnemyScene = ExtResource("2_hvfn8")
+BigEnemyScene = ExtResource("3_wrvix")
 metadata/_edit_horizontal_guides_ = [-32.0]
 metadata/_edit_vertical_guides_ = [288.0, -32.0]
 
@@ -24,3 +27,6 @@ shape = SubResource("RectangleShape2D_wemgy")
 
 [node name="Player" parent="." instance=ExtResource("1_07dit")]
 position = Vector2(128, 280)
+
+[node name="Explosion" type="Node2D" parent="."]
+script = ExtResource("6_rhlcb")

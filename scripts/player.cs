@@ -13,19 +13,20 @@ public partial class Player : Area2D
 	Vector2 PlayerSize = new Vector2(32, 48);
 
 	Princess Princess;
-	const int princessDistance = 32;
+	const int princessDistance = 24;
 
-	const float shotInterval = 1 / 20f;
+	const float shotInterval = 1 / 15f;
 	float shotTimer = 0;
 
 	const float stunDelay = 1;
 	float stunTimer = 0;
 
 	int pendingPower = 0;
-	int bankedPower = 0;
+	// int bankedPower = 0;
 
 	private AnimatedSprite2D animatedSprite2D;
 	ScoreProcessor scoreProcessor;
+	internal bool exploding = false;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -126,20 +127,29 @@ public partial class Player : Area2D
 
 	public void onHit()
 	{
-		stunTimer = stunDelay;
+		if (stunTimer <= 0)
+			stunTimer = stunDelay;
 
 		if (pendingPower < 20)
 			return;
 
 		// Deathbomb
 		var enemies = GetTree().GetNodesInGroup("enemies");
-		foreach (Enemy enemy in enemies)
+		foreach (IEnemy enemy in enemies)
 		{
 			enemy.kill();
 		}
 
-		bankedPower += pendingPower;
+		var bullets = GetTree().GetNodesInGroup("bullets");
+		foreach (Bullet bullet in bullets)
+		{
+			bullet.QueueFree();
+		}
+
+		// bankedPower += pendingPower;
 		pendingPower = 0;
+
+		exploding = true;
 	}
 
 	internal void addPower()

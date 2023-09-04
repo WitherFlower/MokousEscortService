@@ -8,7 +8,10 @@ public partial class playfield : Area2D
 	[Export]
 	public PackedScene EnemyScene { get; set; }
 
-	const double enemySpawnInterval = 0.5;
+	[Export]
+	public PackedScene BigEnemyScene { get; set; }
+
+	const double enemySpawnInterval = 2;
 	private double enemySpawnTimer = 0;
 
 	[Export]
@@ -16,6 +19,11 @@ public partial class playfield : Area2D
 
 	private List<Path> enemyPaths;
 	private Random rand = new Random();
+
+	int currentWaveRemainingEnemies = 0;
+	const double waveSpawnInterval = 0.25;
+	private double waveSpawnTimer = 0;
+	Path currentWavePath;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -46,22 +54,49 @@ public partial class playfield : Area2D
 		while (enemySpawnTimer >= enemySpawnInterval)
 		{
 			enemySpawnTimer -= enemySpawnInterval;
-			SpawnNewEnemy();
+			SpawnNewEnemyWave();
+		}
+
+		if (currentWaveRemainingEnemies > 0)
+		{
+			waveSpawnTimer += delta;
+			while (waveSpawnTimer >= waveSpawnInterval)
+			{
+				currentWaveRemainingEnemies--;
+				waveSpawnTimer -= waveSpawnInterval;
+				SpawnNewEnemy<Enemy>(EnemyScene, 3);
+			}
 		}
 	}
 
-	private void SpawnNewEnemy()
-	{
-		var path = enemyPaths[rand.Next() % enemyPaths.Count];
 
-		var enemy = EnemyScene.Instantiate<Enemy>();
-		enemy.path = path;
-		// enemy.Position = new Vector2(
-		// 	(GD.Randi() % 224) + 16,
-		// 	50
-		// );
-		AddChild(enemy);
-		GD.Print("spawning new enemy");
+	private void SpawnNewEnemyWave()
+	{
+		currentWavePath = enemyPaths[rand.Next() % enemyPaths.Count];
+
+		bool bigFairy = rand.Next() % 3 == 0;
+
+		if (bigFairy)
+		{
+			SpawnNewEnemy<BigEnemy>(BigEnemyScene, 12);
+		}
+		else
+		{
+			currentWaveRemainingEnemies = 5;
+			waveSpawnTimer = waveSpawnInterval;
+		}
+
 	}
 
+	private void SpawnNewEnemy<T>(
+		PackedScene enemyScene, int enemyMaxHealth /*, int tierLevel = 1 */
+	) where T : Node, IEnemy
+	{
+		var enemy = enemyScene.Instantiate<T>();
+
+		enemy.setPath(currentWavePath);
+		enemy.setMaxHealth(enemyMaxHealth);
+
+		AddChild(enemy);
+	}
 }

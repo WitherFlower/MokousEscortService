@@ -1,0 +1,44 @@
+[gd_scene load_steps=10 format=3 uid="uid://qcmabn2cn58d"]
+
+[ext_resource type="Script" path="res://scripts/BigEnemy.cs" id="1_6k4st"]
+[ext_resource type="Texture2D" uid="uid://cmsv1hmx783hx" path="res://assets/big fairy/2 Red/idle1.png" id="1_hhkr7"]
+[ext_resource type="Texture2D" uid="uid://t15umcm1b35s" path="res://assets/big fairy/2 Red/idle2.png" id="2_8dmoe"]
+[ext_resource type="PackedScene" uid="uid://c8qgftcfmal8u" path="res://scenes/Bullet.tscn" id="2_jqctw"]
+[ext_resource type="Texture2D" uid="uid://b8ofwuw3k34n8" path="res://assets/big fairy/2 Red/idle3.png" id="3_6c8oq"]
+[ext_resource type="PackedScene" uid="uid://dby46jhumhjax" path="res://scenes/PowerItem.tscn" id="3_n0a67"]
+[ext_resource type="Texture2D" uid="uid://dksf3t0g2r3im" path="res://assets/big fairy/2 Red/idle4.png" id="4_qradh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cr5kl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hhkr7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_8dmoe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6c8oq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_qradh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a3pv3"]
+radius = 20.0
+
+[node name="BigEnemy" type="Area2D" groups=["enemies"]]
+script = ExtResource("1_6k4st")
+BulletScene = ExtResource("2_jqctw")
+ItemScene = ExtResource("3_n0a67")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_cr5kl")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a3pv3")

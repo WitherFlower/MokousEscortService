@@ -20,10 +20,10 @@ public partial class Projectile : Area2D
 		Position += Speed * (float)delta;
 		var enemies = GetTree().GetNodesInGroup("enemies");
 
-		foreach (Enemy enemy in enemies)
+		foreach (IEnemy enemy in enemies)
 		{
 
-			if (OverlapsArea(enemy))
+			if (OverlapsArea(enemy.hitArea()))
 			{
 				enemy.onHit();
 				QueueFree();
