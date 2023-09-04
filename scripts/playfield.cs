@@ -14,16 +14,28 @@ public partial class playfield : Area2D
 	[Export]
 	public Vector2 TextureSize { get; set; } = new Vector2(256, 320);
 
-	private List<LinearPath> enemyPaths;
+	private List<Path> enemyPaths;
 	private Random rand = new Random();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		enemyPaths = new List<LinearPath>
+		enemyPaths = new List<Path>
 		{
-			new LinearPath(new Vector2(-32, 20), new Vector2(288, 100)),
-			new LinearPath(new Vector2(288, 20), new Vector2(-32, 100))
+			new LinearPath(new Vector2(-32, 50), new Vector2(288, 50)),
+			new LinearPath(new Vector2(288, 100), new Vector2(-32, 100)),
+			new CompositePath(
+				new List<Path>{
+					new LinearPath(new Vector2(-32, -32), new Vector2(224, 100)),
+					new LinearPath(new Vector2(224, 100), new Vector2(-32, 232)),
+				}
+			),
+			new CompositePath(
+				new List<Path>{
+					new LinearPath(new Vector2(288, -32), new Vector2(32, 100)),
+					new LinearPath(new Vector2(32, 100), new Vector2(288, 232)),
+				}
+			),
 		};
 	}
 
